@@ -10,29 +10,70 @@ An AI-enhanced todo application that helps you break down vague tasks into concr
 - ✅ **Complete Task Management**: Add, edit, delete, and mark todos as complete
 - 🌲 **Hierarchical Tasks**: AI-generated sub-tasks are organized under parent tasks
 - 🎨 **Clean UI**: Modern, responsive design with dark mode support
-- 💾 **Local Storage**: Your todos persist in your browser
+- 🔐 **User Authentication**: Secure login and registration with NextAuth.js
+- 💾 **PostgreSQL Database**: Your todos persist in a PostgreSQL database
+- 👤 **Multi-User Support**: Each user has their own private todos
 
 ## Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- PostgreSQL 12+
+
+### Installation
 
 1. **Install dependencies**:
    ```bash
    npm install
    ```
 
-2. **Set up your Gemini API key**:
-   - Copy `.env.local.example` to `.env.local`
-   - Add your Gemini API key:
-     ```
-     GEMINI_API_KEY=your_api_key_here
-     ```
-   - Get your API key from [Google AI Studio](https://makersuite.google.com/app/apikey)
+2. **Set up PostgreSQL database**:
+   ```bash
+   # Create a new database
+   createdb todump
 
-3. **Run the development server**:
+   # Or using psql
+   psql -U postgres
+   CREATE DATABASE todump;
+   ```
+
+3. **Configure environment variables**:
+   - Copy `.env.local.example` to `.env.local`
+   - Update the following variables:
+     ```env
+     # Gemini API key from https://makersuite.google.com/app/apikey
+     GEMINI_API_KEY=your_gemini_api_key_here
+
+     # PostgreSQL connection string
+     DATABASE_URL=postgresql://postgres:password@localhost:5432/todump
+
+     # NextAuth secret (generate with: openssl rand -base64 32)
+     NEXTAUTH_SECRET=your_nextauth_secret_here
+     NEXTAUTH_URL=http://localhost:3000
+     ```
+
+4. **Initialize the database**:
+   ```bash
+   npm run init-db
+   ```
+
+   Or manually run the migrations:
+   ```bash
+   psql -U postgres -d todump -f db/migrations/001_init.sql
+   ```
+
+5. **Run the development server**:
    ```bash
    npm run dev
    ```
 
-4. **Open [http://localhost:3000](http://localhost:3000)** in your browser
+6. **Open [http://localhost:3000](http://localhost:3000)** in your browser
+
+7. **Create an account**:
+   - Click "Register" to create a new account
+   - Sign in with your credentials
+   - Start managing your todos!
 
 ## Usage
 
@@ -57,7 +98,9 @@ An AI-enhanced todo application that helps you break down vague tasks into concr
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS
 - **AI**: Google Gemini API
-- **Storage**: Browser LocalStorage
+- **Database**: PostgreSQL with pg driver
+- **Authentication**: NextAuth.js v5 with credentials provider
+- **Password Hashing**: bcryptjs
 
 ## License
 
